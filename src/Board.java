@@ -1,24 +1,24 @@
 import java.util.InputMismatchException;
 
-public class board {
-    private block[][] b;
+public class Board {
+    private Block[][] b;
     private int row;
     private int col;
     private int freeSeat;
-    board(int row, int col){
-        b = new block[row][col];
+    public Board(int row, int col){
+        b = new Block[row][col];
         this.row = row;
         this.col = col;
         freeSeat = row * col;
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
-                b[i][j] = new block();
+                b[i][j] = new Block();
             }
         }
     }
 
-    public void addChecker(char checkerType , int row, int col){
-        b[row][col].addChecker(checkerType);
+    public void addChecker(Checker checker , int row, int col){
+        b[row][col].addChecker(checker);
         freeSeat -= 1 ;
 
     }
@@ -27,7 +27,8 @@ public class board {
         try {
             return b[row][col].isEmpty();
         } catch (IndexOutOfBoundsException e) {
-            System.out.println("Both row and col number should between 0-2.");
+            System.out.println("Both row and col number should within the board." + "" +
+                    "");
             return false;
         }
     }
@@ -40,7 +41,7 @@ public class board {
         return col;
     }
 
-    public char getCheckerType(int row, int col){
+    public Checker getChecker(int row, int col){
         return b[row][col].getChecker();
     }
 
