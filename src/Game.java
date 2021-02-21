@@ -1,7 +1,12 @@
-public class Game implements Turn {
+public abstract class Game {
     Board b;
-    public Game(int row, int col){
+    String gameName;
+//    boolean isWin = false;
+    Player[] players;
+    public Game(int row, int col, String gameName){
         b = new Board(row, col);
+        this.gameName = gameName;
+        players = setPlayer();
         printBoard();
     }
 
@@ -9,14 +14,12 @@ public class Game implements Turn {
         return b;
     }
 
-    public boolean isWin(){
-        return false;
-    }
+    public abstract boolean isWin();
 
-    public void play(Player[] p){
+    public void roundPlay(Player[] p){
         while (true){
             for (Player player : p) {
-                if (player.nextMove(b)) {
+                if (player.nextMove(this)) {
                     return;
                 }
             }
@@ -26,4 +29,6 @@ public class Game implements Turn {
     public void printBoard(){
         System.out.println(b);
     }
+
+    public abstract Player[] setPlayer();
 }

@@ -1,9 +1,12 @@
 import java.util.InputMismatchException;
 
 public class Board {
-    private Block[][] b;
-    private int row;
-    private int col;
+    /*
+        Normal board(Every place can add checker).
+     */
+    private final Block[][] b;
+    private final int row;
+    private final int col;
     private int freeSeat;
     public Board(int row, int col){
         b = new Block[row][col];
@@ -15,6 +18,10 @@ public class Board {
                 b[i][j] = new Block();
             }
         }
+    }
+
+    public Board(int row){
+        this(row, row);
     }
 
     public void addChecker(Checker checker , int row, int col){
@@ -37,8 +44,8 @@ public class Board {
         return freeSeat == 0;
     }
 
-    public int getSize(){
-        return col;
+    public int getLength(){
+        return row;
     }
 
     public Checker getChecker(int row, int col){
