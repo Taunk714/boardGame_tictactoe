@@ -1,5 +1,6 @@
-import java.util.InputMismatchException;
-
+/*
+    The board.
+ */
 public class Board {
     /*
         Normal board(Every place can add checker).
@@ -24,12 +25,13 @@ public class Board {
         this(row, row);
     }
 
+    // Add checker to the place.
     public void addChecker(Checker checker , int row, int col){
         b[row][col].addChecker(checker);
         freeSeat -= 1 ;
-
     }
 
+    // Whether this place can add checker.
     public boolean canAdd(int row, int col){
         try {
             return b[row][col].isEmpty();
@@ -40,16 +42,23 @@ public class Board {
         }
     }
 
+    // Whether the board is full and has no empty place.
     public boolean isFull(){
         return freeSeat == 0;
     }
 
-    public int getLength(){
+    // The height of the board
+    public int getHeight(){
         return row;
     }
 
+    // Get the checker in this place.
     public Checker getChecker(int row, int col){
-        return b[row][col].getChecker();
+        try {
+            return b[row][col].getChecker();
+        }catch (NullPointerException e){
+            return null;
+        }
     }
 
     public String toString(){

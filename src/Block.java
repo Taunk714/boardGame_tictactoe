@@ -1,3 +1,6 @@
+/*
+    One area of board that can add checker to.
+ */
 public class Block {
     private Checker c;
     public void addChecker(Checker checker){
@@ -13,6 +16,10 @@ public class Block {
     }
 
     public String toString(){
-        return c + " ";
+        if (c == null){
+            return "  ";
+        }else {
+            return c + " ";
+        }
     }
 }

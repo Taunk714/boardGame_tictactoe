@@ -1,7 +1,6 @@
-import java.util.Objects;
-
+// Checker class. If two checkers have the same color and mark, then they are the same checker.
+// Normal pieces, no constraint.
 public class Checker {
-    // I didn't actually use it now
 
     private String checkerName;
     private String mark;
@@ -13,6 +12,24 @@ public class Checker {
         this.mark = mark;
         this.color = color;
         this.p = p;
+    }
+
+    public Checker(String checkerName, String mark, String color){
+        this.checkerName = checkerName;
+        this.mark = mark;
+        this.color = color;
+    }
+
+    public Checker(String mark, String color){
+//        this.checkerName = checkerName;
+        this.mark = mark;
+        this.color = color;
+    }
+
+    public Checker(String mark){
+//        this.checkerName = checkerName;
+        this.mark = mark;
+        this.color = "n";
     }
 
     public String getCheckerName(){
@@ -32,16 +49,14 @@ public class Checker {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Checker checker = (Checker) o;
-        return mark == checker.mark && Objects.equals(checkerName, checker.checkerName) && Objects.equals(color, checker.color);
+        return mark.equals(checker.mark) && color.equals(((Checker) o).color);
     }
 
     @Override
     public String toString() {
-        return mark + " ";
+        return mark;
     }
 
-    //
-//    public
 
 
 

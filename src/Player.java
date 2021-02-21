@@ -1,77 +1,111 @@
 import java.util.InputMismatchException;
+import java.util.Locale;
 import java.util.Scanner;
 
-public abstract class Player {
+// Player class. The core attribute is rule. In different games, one player will have different rules.
+// rule is different based on the game, and it decides whether the player wins the game.
+// This class can be used for all the board that
+public class Player {
     private final String name;
     private int winNum = 0;
-    private String checkerColor;
+//    private String checkerColor;
     protected boolean isWin = false;
-    public Player(String name, String color){
-        this.name = name;
-        winNum = 0;
-        this.checkerColor = color;
-    }
+    Rule rule;
+    boolean multiChecker = true;
+    String checkerMark;
+
+//    public Player(String name){
+//        this.name = name;
+//        winNum = 0;
+////        this.checkerColor = color;
+//    }
 
     public Player(String name){
         this.name = name;
-        winNum = 0;
     }
 
     public Player(){
         this.name = "unknown";
-        winNum = 0;
     }
 
-    public Checker getCheckerData(){
-        return null ;
+    public void setRule(Rule rule) {
+        this.rule = rule;
+        this.isWin = false;
     }
 
-    public boolean nextMove(Game g){
-        Board b = g.getBoard();
-        System.out.print("Player " + checkerColor + "'s turn. ");
-        System.out.println("Please enter the row and col:");
-        Scanner scan = new Scanner(System.in);
-        int row;
-        int col;
-        try {
-            row = scan.nextInt();
-            col = scan.nextInt();
-        }catch (InputMismatchException e){
-            System.out.println("You should enter 2 numbers.");
-            return nextMove(g);
-        }
-        Checker checker = getCheckerData();
-
-
-        if (b.canAdd(row, col)){
-            addChecker(checker, row, col, b);
-            System.out.println(b);
-            if (isWin(row, col, g)){
-                System.out.println("Congratulations! "+ name + " wins the game!");
-                addWinNum();
-                return true;
-            }else if (b.isFull()){
-                System.out.println("It's a tie!");
-                return true;
-            }else {
-                return false;
+    // help function. Ask player what type of checker to add next.
+    private Checker getCheckerData(Game g){
+        while (true){
+            System.out.println("Please enter your checker:");
+            Scanner scan = new Scanner(System.in);
+            String mark;
+            try {
+                mark = scan.next().toUpperCase(Locale.ROOT);
+                if (!g.isValid(mark)){
+                    System.out.println("Invalid checker.");
+                    continue;
+                }
+            }catch (InputMismatchException e){
+                System.out.println("You should enter the mark.");
+                continue;
             }
-        }else {
-            System.out.println("Please select another place:");
-            return nextMove(g);
+            return new Checker(mark);
         }
-
     }
 
+    // player's move. This function can work for all board(Currently, only for those whose pieces can't move)
+    // Print current game board, ask player where and which checker to add and then check the validation,
+    // if it's invalid, ask player to enter again.
+    public int[] nextMove(Game g){
+        while (true) {
+            if (!g.canMove()){
+                Board b = g.getBoard();
+                System.out.print("Player " + name + "'s turn. ");
+                System.out.println("Please enter the row and col:");
+                Scanner scan = new Scanner(System.in);
+                int row;
+                int col;
+                try {
+                    row = scan.nextInt();
+                    col = scan.nextInt();
+                }catch (InputMismatchException e){
+                    System.out.println("You should enter 2 numbers.");
+                    continue;
+                }
+
+                if (b.canAdd(row, col)){
+                    Checker checker;
+                    if (g.isMultiChecker()){
+                        checker = getCheckerData(g);
+                    }else {
+                        checker = new Checker(checkerMark);
+                    }
+                    addChecker(checker, row, col, b);
+                    System.out.println(b);
+                    return new int[]{row, col};
+                }else {
+                    System.out.println("You can't go here, please select another place:");
+                }
+            }else {
+                return null;
+            }
+
+        }
+    }
+
+    // put checker to the place
     private void addChecker(Checker checker, int row, int col, Board b){
-
+        b.addChecker(checker, row, col);
     }
 
-    public abstract boolean isWin(int row, int col, Game g);
+    // check whether the player win after last move(all players).
+    public boolean isWin(int row, int col, Game g){
+        return rule.isWin(row, col, g);
+    };
 
-    public boolean isWin(){
-        return isWin;
-    }
+//    public boolean isWin(){
+//        return isWin;
+//    }
 
     public int getWinNum(){
         return winNum;
@@ -81,12 +115,16 @@ public abstract class Player {
         winNum += 1;
     }
 
-    public String getCheckerColor(){
-        return checkerColor;
+    public void setMultiChecker(boolean multi){
+        this.multiChecker = multi;
     }
+//
+//    public void setCheckerColor(String  checkerColor){
+//        this.checkerColor = checkerColor;
+//    }
 
-    public void setCheckerColor(String  checkerColor){
-        this.checkerColor = checkerColor;
+    public void setChecker(String checkerMark){
+        this.checkerMark = checkerMark;
     }
 
     public String getName(){
