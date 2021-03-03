@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /*
@@ -39,10 +40,16 @@ public class TTTGame extends Game implements LineGame{
         while (true){
             System.out.println("Please enter the size of board(one number within "+floor+"-"+ceil+"):");
             Scanner scan = new Scanner(System.in);
-            int size = scan.nextInt();
-            if (size >=floor && size <= ceil){
-                return new Board(size,size);
+            int size;
+            try {
+                size = scan.nextInt();
+                if (size >=floor && size <= ceil){
+                    return new Board(size,size);
+                }
+            }catch (InputMismatchException e){
+                System.out.println("Please enter number:");
             }
+
         }
     }
 
