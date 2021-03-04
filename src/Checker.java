@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 // Checker class. If two checkers have the same color and mark, then they are the same checker.
 // Normal pieces, no constraint.
 public class Checker {
@@ -50,6 +52,11 @@ public class Checker {
         if (o == null || getClass() != o.getClass()) return false;
         Checker checker = (Checker) o;
         return mark.equals(checker.mark) && color.equals(((Checker) o).color);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(mark, color);
     }
 
     @Override
