@@ -62,25 +62,22 @@ public class Board {
     }
 
     public String toString(){
-        String s = "+";
+        StringBuilder s = new StringBuilder((3 * row + 1)*(2*col+1)+row+col+50);
+        s.append("+");
         for (int i = 0; i < row; i++) {
-            for (int j = 0; j < col; j++) {
-                s += "--+";
-            }
-            s += "\n|";
+            s.append("--+".repeat(Math.max(0, col)));
+            s.append("\n|");
             for (int k = 0; k < col; k++) {
-                s += b[i][k] + "|";
+                s.append(b[i][k]).append("|");
             }
-            s += i+"\n+";
+            s.append(i).append("\n+");
         }
 
+        s.append("--+".repeat(Math.max(0, col)));
+        s.append("\n ");
         for (int i = 0; i < col; i++) {
-            s += "--+";
+            s.append(i).append("  ");
         }
-        s += "\n ";
-        for (int i = 0; i < col; i++) {
-            s += i +"  ";
-        }
-        return s;
+        return s.toString();
     }
 }
